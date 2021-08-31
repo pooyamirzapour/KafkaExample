@@ -30,6 +30,7 @@ public class KafkaConsumerDemo {
                 System.out.println( "key:"+ consumerRecord.key());
                 System.out.println( "value:"+ consumerRecord.value());
                 System.out.println( "topic:"+ consumerRecord.topic());
+                System.out.println( "partition:"+ consumerRecord.partition());
             }
         }
 
