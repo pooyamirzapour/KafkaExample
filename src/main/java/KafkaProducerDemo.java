@@ -1,7 +1,4 @@
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
@@ -27,7 +24,18 @@ public class KafkaProducerDemo {
 
             ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("second_topic", String.valueOf(i),
                     "another message test" + i);
-            producer.send(producerRecord);
+            producer.send(producerRecord, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+                    if (e == null) {
+                        System.out.println("topic:" + recordMetadata.topic());
+                        System.out.println("partition:" + recordMetadata.partition());
+                        System.out.println("offset:" + recordMetadata.offset());
+                        System.out.println("timestamp:" + recordMetadata.timestamp());
+                    } else
+                        e.printStackTrace();
+                }
+            });
         }
 
 
