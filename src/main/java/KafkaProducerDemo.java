@@ -22,16 +22,20 @@ public class KafkaProducerDemo {
         Producer<String, String> producer = new KafkaProducer(properties);
         for (int i = 0; i < 10; i++) {
 
-            ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>("second_topic", String.valueOf(i),
-                    "another message test" + i);
+            String topic = "first_topic";
+            String key = "key_" + i;
+            String value = "value_" + i;
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(topic, key, value);
+
             producer.send(producerRecord, new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                     if (e == null) {
-                        System.out.println("topic:" + recordMetadata.topic());
-                        System.out.println("partition:" + recordMetadata.partition());
-                        System.out.println("offset:" + recordMetadata.offset());
-                        System.out.println("timestamp:" + recordMetadata.timestamp());
+                        System.out.print("topic:" + recordMetadata.topic() + " ");
+                        System.out.print("partition:" + recordMetadata.partition()+ " ");
+                        System.out.print("offset:" + recordMetadata.offset()+ " ");
+                        System.out.print("timestamp:" + recordMetadata.timestamp()+ " ");
+                        System.out.print("\n");
                     } else
                         e.printStackTrace();
                 }
